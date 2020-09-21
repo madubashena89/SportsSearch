@@ -38,12 +38,11 @@ class LeagueFragment : Fragment() {
         recyclerView = view.findViewById(R.id.sportRecyclerView)
         searchView = view.findViewById(R.id.searchView)
         searchView.visibility = View.VISIBLE
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        searchView.queryHint = "Please enter a key word.."
         viewModel.getLeagues()?.observe(viewLifecycleOwner, object : Observer<List<LeaguePojo>?> {
             override fun onChanged(@Nullable  leagueList: List<LeaguePojo>?) {
+                leagueAdapter = LeagueweAdapter(activity, leagueList)
                 setUpAdapterWithList(recyclerView, leagueList)
-                leagueAdapter = LeagueweAdapter( activity, leagueList)
-                recyclerView.adapter = leagueAdapter
                 Log.d("Response", "$leagueList" )
             }
         })
@@ -55,7 +54,7 @@ class LeagueFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-               // leagueAdapter.getFilter().filter(newText)
+                leagueAdapter.getFilter().filter(newText)
                 return false
             }
         })
@@ -65,7 +64,6 @@ class LeagueFragment : Fragment() {
 
 
     fun setUpAdapterWithList(recyclerView: RecyclerView, leagueList: List<LeaguePojo>?){
-        leagueAdapter = LeagueweAdapter(activity, leagueList)
         val layoutManager = LinearLayoutManager(activity)
         layoutManager.stackFromEnd =true
         recyclerView.layoutManager = layoutManager
