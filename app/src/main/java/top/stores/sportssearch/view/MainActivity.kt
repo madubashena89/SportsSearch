@@ -1,5 +1,8 @@
 package top.stores.sportssearch.view
 
+import android.app.AlertDialog
+import android.app.ProgressDialog
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -32,7 +35,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        if(!AppController.applicationContext().isNetworkAvailable(applicationContext)){
+            showDialog()
+        }
         val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
 
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
@@ -45,5 +50,18 @@ class MainActivity : AppCompatActivity() {
         val fragmentTrans = supportFragmentManager.beginTransaction()
         fragmentTrans.replace(R.id.fragment_container, fragment)
         fragmentTrans.commit()
+    }
+
+
+    private fun showDialog(){
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setMessage("Please check the internet connection for the device.")
+            .setCancelable(false)
+            .setPositiveButton("Ok", DialogInterface.OnClickListener {
+                    dialog, id -> finish()
+            })
+        val alert = dialogBuilder.create()
+        alert.setTitle("You are offline!!")
+        alert.show()
     }
 }

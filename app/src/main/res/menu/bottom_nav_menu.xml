@@ -3,14 +3,17 @@
 
     <item
         android:id="@+id/nav_sports"
+        android:icon="@drawable/ic_sports_home"
         android:title="Sports" />
 
     <item
         android:id="@+id/nav_leagues"
+        android:icon="@drawable/ic_leagues"
         android:title="Leagues" />
 
     <item
         android:id="@+id/nav_search"
+        android:icon="@drawable/ic_search_commen"
         android:title="Search" />
 
 </menu>
