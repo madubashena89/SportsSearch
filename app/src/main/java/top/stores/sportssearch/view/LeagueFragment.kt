@@ -1,60 +1,79 @@
 package top.stores.sportssearch.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import androidx.annotation.Nullable
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import top.stores.sportssearch.R
+import top.stores.sportssearch.model.LeaguePojo
+import top.stores.sportssearch.view.adapters.LeagueweAdapter
+import top.stores.sportssearch.viewmodel.LeagueViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [LeagueFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class LeagueFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var viewModel : LeagueViewModel
+    private lateinit var leagueAdapter : LeagueweAdapter
+    private lateinit var recyclerView : RecyclerView
+    private lateinit var searchView : SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
+        viewModel = ViewModelProviders.of(this).get<LeagueViewModel>(LeagueViewModel::class.java)
+
+
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sport, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_sport, container, false)
+        viewModel = ViewModelProviders.of(this).get<LeagueViewModel>(LeagueViewModel::class.java)
+        recyclerView = view.findViewById(R.id.sportRecyclerView)
+        searchView = view.findViewById(R.id.searchView)
+        searchView.visibility = View.VISIBLE
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        viewModel.getLeagues()?.observe(viewLifecycleOwner, object : Observer<List<LeaguePojo>?> {
+            override fun onChanged(@Nullable  leagueList: List<LeaguePojo>?) {
+                setUpAdapterWithList(recyclerView, leagueList)
+                leagueAdapter = LeagueweAdapter( activity, leagueList)
+                recyclerView.adapter = leagueAdapter
+                Log.d("Response", "$leagueList" )
+            }
+        })
+
+        searchView.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+               // leagueAdapter.getFilter().filter(newText)
+                return false
+            }
+        })
+
+        return view
+    }
+
+
+    fun setUpAdapterWithList(recyclerView: RecyclerView, leagueList: List<LeaguePojo>?){
+        leagueAdapter = LeagueweAdapter(activity, leagueList)
+        val layoutManager = LinearLayoutManager(activity)
+        layoutManager.stackFromEnd =true
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = leagueAdapter
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LeagueFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LeagueFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance(param1: String, param2: String) = SportFragment()
     }
 }

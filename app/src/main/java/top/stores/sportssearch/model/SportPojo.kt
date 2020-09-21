@@ -17,5 +17,4 @@ data class SportPojo(
 
     @SerializedName("strSportDescription")
     val sportDescription : String
-){
-}
+)

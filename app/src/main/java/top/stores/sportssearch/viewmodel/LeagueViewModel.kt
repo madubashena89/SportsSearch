@@ -7,41 +7,38 @@ import kotlinx.coroutines.Job
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import top.stores.sportssearch.model.ApiCallService
-import top.stores.sportssearch.model.SportPojo
-import top.stores.sportssearch.model.SportsResponse
+import top.stores.sportssearch.model.*
 
-
-class SportsViewModel : ViewModel() {
+class LeagueViewModel : ViewModel() {
 
     var job: Job? = null
     val loading = MutableLiveData<Boolean>()
     val error = MutableLiveData<String>()
-    private var  sportsList: MutableLiveData<List<SportPojo>>? = null
+    private var  leaguesList: MutableLiveData<List<LeaguePojo>>? = null
 
 
-    fun getSports(): MutableLiveData<List<SportPojo>>? {
-        if (sportsList == null) {
-            sportsList = MutableLiveData<List<SportPojo>>()
+    fun getLeagues(): MutableLiveData<List<LeaguePojo>>? {
+        if (leaguesList == null) {
+            leaguesList = MutableLiveData<List<LeaguePojo>>()
             fetchData()
         }
-        return sportsList
+        return leaguesList
     }
 
 
     fun fetchData() {
-        val call = ApiCallService.call()
-        call.enqueue(object  : Callback<SportsResponse>
+        val call = ApiCallService.calLeagues()
+        call.enqueue(object  : Callback<LeagueResponse>
         {
-            override fun onFailure(call: Call<SportsResponse>, t: Throwable) {
+            override fun onFailure(call: Call<LeagueResponse>, t: Throwable) {
                 Log.d("Error","failure")
             }
 
             override fun onResponse(
-                call: Call<SportsResponse>,
-                response: Response<SportsResponse>
+                call: Call<LeagueResponse>,
+                response: Response<LeagueResponse>
             ) {
-                sportsList?.value=response.body()?.response
+                leaguesList?.value=response.body()?.response
             }
         })
     }
@@ -56,7 +53,5 @@ class SportsViewModel : ViewModel() {
         super.onCleared()
         job?.cancel()
     }
-
-
 
 }

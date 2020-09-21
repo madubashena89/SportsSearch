@@ -1,5 +1,7 @@
 package top.stores.sportssearch.view.adapters
 
+import top.stores.sportssearch.model.SearchPojo
+
 import android.content.Context
 import android.net.Uri
 import android.view.LayoutInflater
@@ -12,12 +14,12 @@ import com.squareup.picasso.Picasso
 import top.stores.sportssearch.R
 import top.stores.sportssearch.model.SportPojo
 
-class SportsAdapter (private val context: Context?, private val sportsList: List<SportPojo>?) : RecyclerView.Adapter<SportsAdapter.SportsAdapterViewHolder>() {
+class SearchAdapter (private val context: Context?, private val sportsList: List<SearchPojo>?) : RecyclerView.Adapter<SearchAdapter.SearchAdapterViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SportsAdapterViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAdapterViewHolder {
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_layout, parent, false)
-        return SportsAdapterViewHolder(v)
+        return SearchAdapterViewHolder(v)
     }
 
     override fun getItemCount(): Int {
@@ -25,12 +27,12 @@ class SportsAdapter (private val context: Context?, private val sportsList: List
 
     }
 
-    override fun onBindViewHolder(holder: SportsAdapterViewHolder, position: Int) {
-        holder.tvSportTitle.text = sportsList?.get(position)?.sportName
-        holder.tvSportFormat.text = sportsList?.get(position)?.sportFormat
-        holder.tvSportDescription.text = sportsList?.get(position)?.sportDescription
+    override fun onBindViewHolder(holder: SearchAdapterViewHolder, position: Int) {
+        holder.tvSportTitle.text = sportsList?.get(position)?.strPlayer
+        holder.tvSportFormat.text = sportsList?.get(position)?.strNationality
+        holder.tvSportDescription.text = sportsList?.get(position)?.strDescriptionEN
 
-        val imageUrl = sportsList?.get(position)?.sportImageUrl
+        val imageUrl = sportsList?.get(position)?.strThumb
         Picasso.with(context)
             .load(Uri.parse(imageUrl)) // internet path
             .placeholder(R.mipmap.ic_launcher)
@@ -40,7 +42,7 @@ class SportsAdapter (private val context: Context?, private val sportsList: List
     }
 
 
-    class SportsAdapterViewHolder (itemView: View): RecyclerView.ViewHolder(itemView){
+    class SearchAdapterViewHolder (itemView: View): RecyclerView.ViewHolder(itemView){
         var tvSportTitle : TextView
         var imageSports: ImageView
         var tvSportFormat: TextView

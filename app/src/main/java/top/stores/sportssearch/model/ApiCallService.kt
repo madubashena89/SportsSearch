@@ -30,4 +30,8 @@ object ApiCallService {
 
 
      fun call() = api.callGet()
+
+    fun calLeagues() = api.callGetLeague()
+
+    fun callSearchPalyers(playerName : String) = api.callQueryDynamic(playerName)
 }
