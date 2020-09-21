@@ -39,6 +39,7 @@ class LeagueFragment : Fragment() {
         searchView = view.findViewById(R.id.searchView)
         searchView.visibility = View.VISIBLE
         searchView.queryHint = "Please enter a key word.."
+        leagueAdapter =LeagueweAdapter( activity, mutableListOf())
         viewModel.getLeagues()?.observe(viewLifecycleOwner, object : Observer<List<LeaguePojo>?> {
             override fun onChanged(@Nullable  leagueList: List<LeaguePojo>?) {
                 leagueAdapter = LeagueweAdapter(activity, leagueList)
