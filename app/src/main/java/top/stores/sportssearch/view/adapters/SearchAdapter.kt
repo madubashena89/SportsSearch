@@ -3,6 +3,7 @@ package top.stores.sportssearch.view.adapters
 import top.stores.sportssearch.model.SearchPojo
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -33,11 +34,18 @@ class SearchAdapter (private val context: Context?, private val sportsList: List
         holder.tvSportDescription.text = sportsList?.get(position)?.strDescriptionEN
 
         val imageUrl = sportsList?.get(position)?.strThumb
-        Picasso.with(context)
-            .load(Uri.parse(imageUrl)) // internet path
-            .placeholder(R.mipmap.ic_launcher)
-            .error(R.mipmap.ic_launcher_round)
-            .into(holder.imageSports)
+        if(!imageUrl.isNullOrEmpty()){
+            Picasso.with(context)
+                .load(Uri.parse(imageUrl)) // internet path
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher_round)
+                .into(holder.imageSports)
+        }
+        else{
+           val bm = BitmapFactory.decodeResource(context?.resources, R.drawable.ic_search);
+            holder.imageSports.setImageBitmap(bm)
+        }
+
 
     }
 

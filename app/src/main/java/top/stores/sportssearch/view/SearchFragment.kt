@@ -46,8 +46,8 @@ class SearchFragment : Fragment() {
         textView.visibility=View.VISIBLE
         searchView.visibility = View.VISIBLE
         searchView.queryHint = "Please enter a player name.."
-        searchView.onActionViewExpanded();
-        searchView.setIconified(true);
+       // searchView.onActionViewExpanded();
+       // searchView.setIconified(true);
         searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
