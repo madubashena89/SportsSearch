@@ -8,7 +8,7 @@ import android.net.NetworkInfo
 class AppController : Application() {
 
     init {
-        // App Instance test 3r3
+        // App Instance test 3r3w
         instance = this
     }
 
